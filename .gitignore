@@ -1,0 +1,330 @@
+# ============================================
+# Единый .gitignore для проекта Prime Messenger
+# ============================================
+
+# ============================================
+# ОБЩИЕ ИСКЛЮЧЕНИЯ
+# ============================================
+
+# Переменные окружения (секреты)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Базы данных
+*.db
+*.sqlite
+*.sqlite3
+db.sqlite3
+db.sqlite3-journal
+users.db
+
+# Логи
+*.log
+logs/
+
+# Временные файлы
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Сертификаты
+certs/
+*.pfx
+*.pem
+*.key
+*.crt
+
+# ============================================
+# PYTHON (Bot)
+# ============================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# IDE
+.idea/
+.vscode/
+*.pydevproject
+.project
+.pydevproject
+
+# ============================================
+# NODE.JS / REACT (messanger-front)
+# ============================================
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Production builds
+dist/
+dist-ssr/
+build/
+
+# Local environment files
+*.local
+
+# Certificates
+certs/
+*.pfx
+*.pem
+*.key
+*.crt
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Package manager locks (раскомментируйте если нужно)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ============================================
+# .NET / ASP.NET (Messenger)
+# ============================================
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.pidb
+*.scc
+*.vspscc
+*.vssscc
+.autoproperties
+*.nupkg
+*.snk
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin
+$RECYCLE.BIN/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+# Visual Studio cache/options
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+
+# Build Results
+[Bb]in/
+[Oo]bj/
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.ipdb
+*.idb
+*.rsc
+*.rc
+*.res
+*.cache
+*.tlog
+*.lastbuildstate
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Backup & report files
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# Node.js (если используется в .NET проекте)
+node_modules/
+
+# ============================================
+# СЕКРЕТЫ И КОНФИДЕНЦИАЛЬНЫЕ ДАННЫЕ
+# ============================================
+
+# JWT Keys
+jwt.key
+jwt.pem
+*.key
+
+# SSL Certificates
+*.pfx
+*.p12
+*.pkcs12
+
+# SSH Keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.pem
+*.key
+
+# Telegram Bot Tokens
+# (уже покрыто .env, но дополнительно)
+bot_token.txt
+telegram_token.txt
+
+# ============================================
+# КОНФИГУРАЦИОННЫЕ ФАЙЛЫ С ПАРОЛЯМИ
+# ============================================
+
+# SQL Server connection strings
+appsettings.local.json
+appsettings.*.local.json
+local.settings.json
+
+# ============================================
+# ИСКЛЮЧЕНИЯ ДЛЯ РАЗРАБОТКИ
+# ============================================
+
+# Test files (если не нужны в репозитории)
+*.test.js
+*.spec.js
+__tests__/
+test/
+tests/
+
+# Documentation build
+docs/_build/
+site/
+
+# ============================================
+# ВАЖНО: Эти файлы НЕ должны быть в репозитории
+# ============================================
+
+# Любые файлы с реальными токенами, паролями, ключами
+secrets/
+credentials/
+.private/
