@@ -7,6 +7,8 @@
 # ============================================
 
 # Переменные окружения (секреты)
+Bot/.env
+Prime/messanger-front/.env.local
 .env
 .env.local
 .env.*.local
