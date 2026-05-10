@@ -10,6 +10,7 @@ import { generateAndStoreKeys } from "@/lib/keyManager"
 
 const registerSchema = z
   .object({
+    displayName: z.string().min(2, "Минимум 2 символа").max(50, "Максимум 50 символов"),
     username: z.string().min(3, "Минимум 3 символа").max(30, "Максимум 30 символов"),
     password: z.string().min(6, "Минимум 6 символов"),
     confirmPassword: z.string().min(6, "Подтверди пароль"),
@@ -29,6 +30,7 @@ export function RegisterForm() {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      displayName: "",
       username: "",
       password: "",
       confirmPassword: "",
@@ -46,6 +48,7 @@ export function RegisterForm() {
       const data = await registerUser({
         username: values.username,
         password: values.password,
+        displayName: values.displayName,
         publicKey,
         encryptedPrivateKey,  // Send encrypted private key to server
       })
@@ -79,6 +82,21 @@ export function RegisterForm() {
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
+          <div className="auth-field">
+            <label htmlFor="register-displayname">Имя</label>
+            <input
+              id="register-displayname"
+              type="text"
+              autoComplete="name"
+              placeholder="Иван Иванов"
+              className="auth-input"
+              {...form.register("displayName")}
+            />
+            {form.formState.errors.displayName && (
+              <p className="auth-error">{form.formState.errors.displayName.message}</p>
+            )}
+          </div>
+
           <div className="auth-field">
             <label htmlFor="register-username">Имя пользователя</label>
             <input

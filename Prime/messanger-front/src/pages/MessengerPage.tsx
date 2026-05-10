@@ -819,11 +819,15 @@ export function MessengerPage() {
           </div>
         </div>
 
-        {/* Кнопка Новый чат */}
-        <div className="px-4 pb-4">
-          <Button className="w-full bg-primary hover:bg-primary-hover" onClick={() => setIsCreateOpen(true)}>
-            <Plus className="mr-2 size-4" /> Новый чат / группа
-          </Button>
+        {/* Плавающая кнопка нового чата */}
+        <div className="relative">
+          <button
+            className="fixed bottom-6 left-6 z-10 size-14 rounded-full bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg flex items-center justify-center transition-transform hover:scale-110"
+            onClick={() => setIsCreateOpen(true)}
+            aria-label="Новый чат"
+          >
+            <Plus className="size-6" />
+          </button>
         </div>
 
         {/* Список чатов */}

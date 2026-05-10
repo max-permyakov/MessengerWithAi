@@ -244,21 +244,28 @@ namespace Messenger
                     ? "Prime AI"
                     : isGroup
                     ? (c.Name ?? "Группа без названия")
-                    : (other?.Username ?? "Личный чат");
-
-                var subtitle = c.IsAi
-                    ? "Личный чат с нейросетью"
-                    : isGroup
-                    ? $"{c.ChatUsers.Count} участников"
-                    : "Личный чат";
+                    : (other?.DisplayName ?? other?.Username ?? "Личный чат");
 
                 var lastMessage = c.Messages
                     .OrderByDescending(m => m.CreatedAt)
                     .FirstOrDefault();
 
-                var lastMessageText = lastMessage?.Text ?? "";
-
                 var lastActivity = lastMessage?.CreatedAt ?? c.CreatedAt;
+                var timeSinceActivity = DateTime.UtcNow - lastActivity;
+                
+                var subtitle = c.IsAi
+                    ? "Личный чат с нейросетью"
+                    : isGroup
+                    ? $"{c.ChatUsers.Count} участников"
+                    : timeSinceActivity.TotalDays >= 2
+                    ? "был в сети давно"
+                    : timeSinceActivity.TotalHours >= 1
+                    ? $"был в сети {(int)timeSinceActivity.TotalHours} ч. назад"
+                    : timeSinceActivity.TotalMinutes >= 1
+                    ? $"был в сети {(int)timeSinceActivity.TotalMinutes} мин. назад"
+                    : "в сети";
+
+                var lastMessageText = lastMessage?.Text ?? "";
                 var updatedAt = ToMoscow(lastActivity)
                         .ToString("dd.MM.yyyy HH:mm");
 
