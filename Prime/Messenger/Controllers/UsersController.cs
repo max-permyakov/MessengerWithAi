@@ -124,6 +124,15 @@ namespace Messenger
                 CreatedAt = user.CreatedAt.ToString("O")
             });
         }
+        
+        [HttpGet("{id:guid}/publickey")]
+        public async Task<IActionResult> GetUserPublicKey(Guid id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null) return NotFound("User not found");
+
+            return Ok(new { publicKey = user.PublicKey });
+        }
 
         [HttpPost("me/avatar")]
         [RequestSizeLimit(20L * 1024 * 1024)]

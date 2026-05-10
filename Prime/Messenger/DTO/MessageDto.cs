@@ -19,5 +19,10 @@ namespace Messenger
         public bool HasFile { get; set; }
         public bool Delivered { get; set; }
         public bool Read { get; set; }
+        
+        // E2EE fields
+        public string? EncryptedText { get; set; }
+        public string? EncryptedKey { get; set; }
+        public bool IsEncrypted { get; set; }
     }
 }

@@ -98,6 +98,9 @@ namespace Messenger
                 IsMine = message.SenderId == currentUserId,
                 CreatedAt = message.CreatedAt.ToString("O"),
                 FileName = message.FileName,
+                EncryptedText = message.EncryptedText,
+                EncryptedKey = message.EncryptedKey,
+                IsEncrypted = message.IsEncrypted,
                 FileSize = message.FileSize,
                 FileUrl = message.FilePath == null ? null : $"/api/files/{message.Id}",
                 FileContentType = message.FileContentType,
@@ -388,7 +391,7 @@ namespace Messenger
             if (string.IsNullOrEmpty(currentUserIdClaim) || !Guid.TryParse(currentUserIdClaim, out Guid currentUserId))
                 return Unauthorized("Invalid user token");
 
-            if (dto == null || string.IsNullOrWhiteSpace(dto.Text))
+            if (dto == null || (string.IsNullOrWhiteSpace(dto.Text) && string.IsNullOrWhiteSpace(dto.EncryptedText)))
                 return BadRequest("Текст сообщения не может быть пустым");
 
             var chat = await _context.Chats
@@ -469,7 +472,10 @@ namespace Messenger
                 Id = Guid.NewGuid(),
                 ChatId = id,
                 SenderId = currentUserId,
-                Text = dto.Text.Trim(),
+                Text = dto.Text?.Trim() ?? string.Empty,
+                EncryptedText = dto.EncryptedText,
+                EncryptedKey = dto.EncryptedKey,
+                IsEncrypted = dto.IsEncrypted,
                 CreatedAt = DateTime.UtcNow
             };
 
