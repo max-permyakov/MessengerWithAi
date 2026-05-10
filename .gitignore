@@ -330,3 +330,5 @@ site/
 secrets/
 credentials/
 .private/
+
+.fake

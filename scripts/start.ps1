@@ -61,11 +61,13 @@ Write-Host "Выберите, что запустить:" -ForegroundColor Yello
 Write-Host "  1. Backend (ASP.NET)" -ForegroundColor White
 Write-Host "  2. Frontend (React)" -ForegroundColor White
 Write-Host "  3. Telegram Bot (Python)" -ForegroundColor White
-Write-Host "  4. Все компоненты" -ForegroundColor White
-Write-Host "  5. Выход" -ForegroundColor White
+Write-Host "  4. AI Service (Python)" -ForegroundColor White
+Write-Host "  5. Все компоненты (Backend + Frontend + Bot)" -ForegroundColor White
+Write-Host "  6. Всё + AI Service" -ForegroundColor White
+Write-Host "  7. Выход" -ForegroundColor White
 Write-Host ""
 
-$choice = Read-Host "Ваш выбор (1-5)"
+$choice = Read-Host "Ваш выбор (1-7)"
 
 switch ($choice) {
     "1" {
@@ -85,37 +87,98 @@ switch ($choice) {
     "3" {
         Write-Host ""
         Write-Host "Запуск Telegram Bot..." -ForegroundColor Green
-        Set-Location "Bot"
-        Start-Process powershell -ArgumentList "-NoExit", "-Command", ".\.venv\Scripts\Activate.ps1; python run.py"
+        $botPath = Join-Path $PWD "Bot"
+        if (Test-Path "$botPath\.venv\Scripts\Activate.ps1") {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; .\.venv\Scripts\Activate.ps1; python bot\run.py"
+        } else {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; python bot\run.py"
+        }
         Write-Host "Bot запущен в новом окне!" -ForegroundColor Green
     }
     "4" {
         Write-Host ""
-        Write-Host "Запуск всех компонентов..." -ForegroundColor Green
-        
+        Write-Host "Запуск AI Service..." -ForegroundColor Green
+        $botPath = Join-Path $PWD "Bot"
+        if (Test-Path "$botPath\.venv\Scripts\Activate.ps1") {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; .\.venv\Scripts\Activate.ps1; python -m uvicorn ai_service.main:app --host 0.0.0.0 --port 8000 --reload"
+        } else {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; python -m uvicorn ai_service.main:app --host 0.0.0.0 --port 8000 --reload"
+        }
+        Write-Host "AI Service запущен в новом окне!" -ForegroundColor Green
+        Write-Host "Адрес: http://localhost:8000" -ForegroundColor Cyan
+    }
+    "5" {
+        Write-Host ""
+        Write-Host "Запуск всех компонентов (Backend + Frontend + Bot)..." -ForegroundColor Green
+
         # Backend
         $backendPath = Join-Path $PWD "Prime\Messenger"
         Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$backendPath'; dotnet run" -WindowStyle Normal
         Write-Host "  ✓ Backend запущен" -ForegroundColor Green
-        
+
         # Frontend
         $frontendPath = Join-Path $PWD "Prime\messanger-front"
         Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$frontendPath'; npm run dev" -WindowStyle Normal
         Write-Host "  ✓ Frontend запущен" -ForegroundColor Green
-        
+
         # Bot
         $botPath = Join-Path $PWD "Bot"
-        Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; .\.venv\Scripts\Activate.ps1; python run.py" -WindowStyle Normal
+        if (Test-Path "$botPath\.venv\Scripts\Activate.ps1") {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; .\.venv\Scripts\Activate.ps1; python bot\run.py" -WindowStyle Normal
+        } else {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; python bot\run.py" -WindowStyle Normal
+        }
         Write-Host "  ✓ Bot запущен" -ForegroundColor Green
-        
+
         Write-Host ""
         Write-Host "Все компоненты запущены в отдельных окнах!" -ForegroundColor Green
         Write-Host ""
         Write-Host "Адреса:" -ForegroundColor Cyan
         Write-Host "  Frontend: http://localhost:5173" -ForegroundColor White
         Write-Host "  Backend:  http://localhost:4000 / https://localhost:4001" -ForegroundColor White
+        Write-Host ""
+        Write-Host "⚠ AI Service не запущен! Для AI-функций запустите опцию 4" -ForegroundColor Yellow
     }
-    "5" {
+    "6" {
+        Write-Host ""
+        Write-Host "Запуск всех компонентов + AI Service..." -ForegroundColor Green
+
+        # Backend
+        $backendPath = Join-Path $PWD "Prime\Messenger"
+        Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$backendPath'; dotnet run" -WindowStyle Normal
+        Write-Host "  ✓ Backend запущен" -ForegroundColor Green
+
+        # Frontend
+        $frontendPath = Join-Path $PWD "Prime\messanger-front"
+        Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$frontendPath'; npm run dev" -WindowStyle Normal
+        Write-Host "  ✓ Frontend запущен" -ForegroundColor Green
+
+        # Bot
+        $botPath = Join-Path $PWD "Bot"
+        if (Test-Path "$botPath\.venv\Scripts\Activate.ps1") {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; .\.venv\Scripts\Activate.ps1; python bot\run.py" -WindowStyle Normal
+        } else {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; python bot\run.py" -WindowStyle Normal
+        }
+        Write-Host "  ✓ Bot запущен" -ForegroundColor Green
+
+        # AI Service
+        if (Test-Path "$botPath\.venv\Scripts\Activate.ps1") {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; .\.venv\Scripts\Activate.ps1; python -m uvicorn ai_service.main:app --host 0.0.0.0 --port 8000 --reload" -WindowStyle Normal
+        } else {
+            Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$botPath'; python -m uvicorn ai_service.main:app --host 0.0.0.0 --port 8000 --reload" -WindowStyle Normal
+        }
+        Write-Host "  ✓ AI Service запущен" -ForegroundColor Green
+
+        Write-Host ""
+        Write-Host "Все компоненты запущены в отдельных окнах!" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "Адреса:" -ForegroundColor Cyan
+        Write-Host "  Frontend: http://localhost:5173" -ForegroundColor White
+        Write-Host "  Backend:  http://localhost:4000 / https://localhost:4001" -ForegroundColor White
+        Write-Host "  AI Service: http://localhost:8000" -ForegroundColor White
+    }
+    "7" {
         Write-Host "Выход..." -ForegroundColor Gray
         exit 0
     }

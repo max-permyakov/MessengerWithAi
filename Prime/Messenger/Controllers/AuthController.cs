@@ -32,7 +32,8 @@ namespace Messenger
             {
                 Id = Guid.NewGuid(),
                 Username = dto.Username,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),   
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                PublicKey = dto.PublicKey,  // Save public key for E2EE
                 CreatedAt = DateTime.UtcNow
             };
 

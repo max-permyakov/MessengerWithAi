@@ -59,6 +59,9 @@ namespace Messenger.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("EncryptedChatKey")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("LastReadAt")
                         .HasColumnType("datetime2");
 
@@ -81,6 +84,12 @@ namespace Messenger.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EncryptedKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EncryptedText")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FileContentType")
                         .HasColumnType("nvarchar(max)");
 
@@ -94,6 +103,9 @@ namespace Messenger.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsAi")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEncrypted")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModelName")
@@ -168,6 +180,9 @@ namespace Messenger.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicKey")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")

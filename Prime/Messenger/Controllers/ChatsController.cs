@@ -47,10 +47,7 @@ namespace Messenger
             return ext is ".txt" or ".md" or ".csv" or ".json" or ".log" or ".xml" or ".yml" or ".yaml" or ".ini";
         }
 
-        /// <summary>
-        /// Отправляет уведомления всем участникам чата об новом сообщении и обновляет их счётчики непрочитанных
-        /// </summary>
-        private async Task NotifyChatMembersAsync(Chat chat, Message message, Guid senderId)
+            private async Task NotifyChatMembersAsync(Chat chat, Message message, Guid senderId)
         {
             var chatIdStr = chat.Id.ToString();
             var notification = new NewMessageNotification

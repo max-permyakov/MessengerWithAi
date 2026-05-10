@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { registerUser, setAuthSession } from "@/lib/auth"
+import { generateAndStoreKeys } from "@/lib/keyManager"
 
 const registerSchema = z
   .object({
@@ -38,13 +39,19 @@ export function RegisterForm() {
     setIsLoading(true)
 
     try {
+      // Generate E2EE keys
+      toast.info("Генерация ключей шифрования...")
+      const publicKey = await generateAndStoreKeys(values.password)
+
+      // Register user with public key
       const data = await registerUser({
         username: values.username,
         password: values.password,
+        publicKey,  // Send public key to server
       })
 
       setAuthSession(data.token, data.username ?? values.username)
-      toast.success("Регистрация успешна")
+      toast.success("Регистрация успешна! 🔐 Ключи шифрования созданы")
       navigate("/chat", { replace: true })
     } catch (error) {
       const message = error instanceof Error ? error.message : "Ошибка регистрации"
