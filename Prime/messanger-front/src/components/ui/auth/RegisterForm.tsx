@@ -40,7 +40,6 @@ export function RegisterForm() {
 
     try {
       // Generate E2EE keys
-      toast.info("Генерация ключей шифрования...")
       const { publicKey, encryptedPrivateKey } = await generateAndStoreKeys(values.password)
 
       // Register user with public key and encrypted private key
@@ -56,7 +55,7 @@ export function RegisterForm() {
       // Save password for E2EE (same as login)
       sessionStorage.setItem("e2ee_password", values.password)
       
-      toast.success("Регистрация успешна! 🔐 Ключи шифрования созданы")
+      toast.success("Регистрация успешна!")
       navigate("/chat", { replace: true })
     } catch (error) {
       const message = error instanceof Error ? error.message : "Ошибка регистрации"

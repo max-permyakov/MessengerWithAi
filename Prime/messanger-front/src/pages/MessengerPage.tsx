@@ -939,7 +939,7 @@ export function MessengerPage() {
             </header>
 
             {/* Сообщения */}
-            <div className="flex-1 min-h-0 overflow-y-auto p-6 pb-24 md:pb-6 space-y-6 bg-[#0a0012]/50">
+            <div className="flex-1 min-h-0 overflow-y-auto p-6 pb-24 md:pb-6 space-y-6 bg-[#0a0012]/50 flex flex-col-reverse">
               {isLoadingMessages ? (
                 <div className="text-center py-12">Загрузка сообщений...</div>
               ) : (
@@ -952,14 +952,14 @@ export function MessengerPage() {
                     <div
                       key={msg.id}
                       className={cn(
-                        "max-w-[75%] rounded-3xl px-5 py-3",
+                        "max-w-[75%] rounded-3xl px-5 py-3 break-words",
                         msg.isMine ? "ml-auto bg-primary text-primary-foreground" : "bg-muted"
                       )}
                     >
                       <div className="flex items-start gap-2">
                         <div className="min-w-0 flex-1">
                           <p className="text-xs opacity-70">{msg.author}</p>
-                          {msg.text && <p className="text-[15px] leading-relaxed">{msg.text}</p>}
+                          {msg.text && <p className="text-[15px] leading-relaxed break-words whitespace-pre-wrap">{msg.text}</p>}
 
                           {hasFile && (
                             <button
