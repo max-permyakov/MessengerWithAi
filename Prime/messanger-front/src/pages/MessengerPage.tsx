@@ -949,7 +949,7 @@ export function MessengerPage() {
             </header>
 
             {/* Сообщения */}
-            <div className="flex-1 min-h-0 overflow-y-auto p-6 pb-24 md:pb-6 space-y-6 bg-[#0a0012]/50 flex flex-col-reverse">
+            <div className="flex-1 min-h-0 overflow-y-auto p-6 pb-24 md:pb-6 space-y-6 glass-panel flex flex-col-reverse">
               {isLoadingMessages ? (
                 <div className="text-center py-12">Загрузка сообщений...</div>
               ) : (
@@ -963,7 +963,7 @@ export function MessengerPage() {
                       key={msg.id}
                       className={cn(
                         "max-w-[75%] rounded-3xl px-5 py-3 break-words",
-                        msg.isMine ? "ml-auto bg-primary text-primary-foreground" : "bg-muted"
+                        msg.isMine ? "ml-auto bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/20" : "glass-panel"
                       )}
                     >
                       <div className="flex items-start gap-2">
@@ -1169,11 +1169,11 @@ export function MessengerPage() {
 
       {isCreateOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4"
           onClick={() => !isCreating && setIsCreateOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-border bg-card p-4 text-foreground shadow-xl"
+            className="w-full max-w-md rounded-2xl glass-modal p-4 text-foreground"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -1289,11 +1289,11 @@ export function MessengerPage() {
 
       {isForwardOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4"
           onClick={() => !isForwarding && setIsForwardOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-border bg-card p-4 text-foreground shadow-xl"
+            className="w-full max-w-md rounded-2xl glass-modal p-4 text-foreground"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -1343,11 +1343,11 @@ export function MessengerPage() {
 
       {isChatInfoOpen && (
         <div
-          className="fixed inset-0 z-[55] flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-[55] flex items-center justify-center bg-black/40 backdrop-blur-md p-4"
           onClick={() => setIsChatInfoOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-border bg-card p-4 text-foreground shadow-xl"
+            className="w-full max-w-md rounded-2xl glass-modal p-4 text-foreground"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -1409,11 +1409,11 @@ export function MessengerPage() {
 
       {isParticipantOpen && (
         <div
-          className="fixed inset-0 z-[56] flex items-center justify-center bg-black/60 p-4"
+          className="fixed inset-0 z-[56] flex items-center justify-center bg-black/40 backdrop-blur-md p-4"
           onClick={() => setIsParticipantOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-border bg-card p-4 text-foreground shadow-xl"
+            className="w-full max-w-md rounded-2xl glass-modal p-4 text-foreground"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -1609,6 +1609,10 @@ export function MessengerPage() {
     </div>
   );
 }
+
+
+
+
 
 
 
