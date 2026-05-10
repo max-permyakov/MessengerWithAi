@@ -727,7 +727,7 @@ export function MessengerPage() {
   };
 
   return (
-    <div className="flex h-[100svh] w-full flex-col bg-background text-foreground overflow-hidden md:grid md:h-screen md:grid-cols-[minmax(280px,1fr)_2fr]">
+    <div className="flex h-screen w-full flex-col bg-background text-foreground overflow-hidden fixed inset-0 md:grid md:grid-cols-[minmax(280px,1fr)_2fr]">
       {/* ==================== ЛЕВАЯ ПАНЕЛЬ ==================== */}
       <aside
         className={cn(
@@ -822,7 +822,7 @@ export function MessengerPage() {
         {/* Плавающая кнопка нового чата */}
         <div className="relative">
           <button
-            className="fixed bottom-6 right-6 md:right-[calc(100vw-280px+1.5rem)] z-10 size-14 rounded-full bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg flex items-center justify-center transition-transform hover:scale-110"
+            className="fixed bottom-6 right-6 md:right-[calc(70vw)] z-10 size-14 rounded-full bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg flex items-center justify-center transition-transform hover:scale-110"
             onClick={() => setIsCreateOpen(true)}
             aria-label="Новый чат"
           >
@@ -1603,5 +1603,6 @@ export function MessengerPage() {
     </div>
   );
 }
+
 
 
