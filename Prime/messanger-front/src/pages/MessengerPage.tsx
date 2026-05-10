@@ -686,9 +686,15 @@ export function MessengerPage() {
             }
           : undefined
       );
-      newMsg.isMine = true;
+            newMsg.isMine = true;
       setMessagesByConversation(p => ({ ...p, [selectedId]: [...(p[selectedId] ?? []), newMsg] }));
       await loadChats();
+      
+      // Prevent scroll on mobile after sending
+      if (window.innerWidth < 768) {
+        (e.target as HTMLFormElement).querySelector('input')?.blur();
+        window.scrollTo(0, 0);
+      }
     } catch {
       setDraft(text);
       toast.error("Ошибка отправки");
