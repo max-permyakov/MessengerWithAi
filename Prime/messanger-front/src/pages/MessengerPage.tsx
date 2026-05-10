@@ -294,8 +294,24 @@ export function MessengerPage() {
       if (showLoading) setIsLoadingMessages(true);
       try {
         const msgs = await getMessages(selectedId);
-        const withMine = msgs.map(m => ({ ...m, isMine: m.author === username }));
-        if (!cancelled) setMessagesByConversation(prev => ({ ...prev, [selectedId]: withMine }));
+        
+        // Decrypt encrypted messages
+        const decryptedMsgs = await Promise.all(
+          msgs.map(async (m) => {
+            if (m.isEncrypted && userPassword) {
+              try {
+                const decryptedText = await decryptMessageIfNeeded(m, userPassword);
+                return { ...m, text: decryptedText, isMine: m.author === username };
+              } catch (error) {
+                console.error("Failed to decrypt message:", error);
+                return { ...m, text: "[🔒 Не удалось расшифровать]", isMine: m.author === username };
+              }
+            }
+            return { ...m, isMine: m.author === username };
+          })
+        );
+        
+        if (!cancelled) setMessagesByConversation(prev => ({ ...prev, [selectedId]: decryptedMsgs }));
       } catch {
         if (showLoading) toast.error("Не удалось загрузить сообщения");
       } finally {
