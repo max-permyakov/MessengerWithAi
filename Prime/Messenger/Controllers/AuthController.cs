@@ -46,7 +46,8 @@ namespace Messenger
             return Ok(new AuthResponseDto
             {
                 Token = token,
-                Username = user.Username
+                Username = user.Username,
+                UserId = user.Id.ToString()
             });
         }
 
@@ -64,7 +65,8 @@ namespace Messenger
             return Ok(new AuthResponseDto
             {
                 Token = token,
-                Username = user.Username
+                Username = user.Username,
+                UserId = user.Id.ToString()
             });
         }
     }

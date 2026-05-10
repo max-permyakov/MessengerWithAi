@@ -51,7 +51,7 @@ export function RegisterForm() {
         encryptedPrivateKey,  // Send encrypted private key to server
       })
 
-      setAuthSession(data.token, data.username ?? values.username)
+      setAuthSession(data.token, data.username ?? values.username, data.userId)
       
       // Save password for E2EE (same as login)
       sessionStorage.setItem("e2ee_password", values.password)

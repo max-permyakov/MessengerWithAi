@@ -35,7 +35,7 @@ export function LoginForm() {
         password: values.password,
       })
 
-      setAuthSession(data.token, data.username ?? values.username)
+      setAuthSession(data.token, data.username ?? values.username, data.userId)
       
       // Save password for E2EE (encrypted in sessionStorage)
       sessionStorage.setItem("e2ee_password", values.password)
