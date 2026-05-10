@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 import { LogOut, Search, Send, User, Users, Plus, Paperclip, MoreVertical, Settings, Trash2, Bot } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -822,7 +822,7 @@ export function MessengerPage() {
         {/* Плавающая кнопка нового чата */}
         <div className="relative">
           <button
-            className="absolute bottom-6 right-6 z-10 size-14 rounded-full bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg flex items-center justify-center transition-transform hover:scale-110"
+            className="fixed bottom-6 right-6 md:right-[calc(100vw-280px+1.5rem)] z-10 size-14 rounded-full bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg flex items-center justify-center transition-transform hover:scale-110"
             onClick={() => setIsCreateOpen(true)}
             aria-label="Новый чат"
           >
@@ -1603,4 +1603,5 @@ export function MessengerPage() {
     </div>
   );
 }
+
 
