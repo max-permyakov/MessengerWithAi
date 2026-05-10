@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 import { clearAuthSession, getUsername, getToken } from "@/lib/auth";
+import { sendSecureMessage, decryptMessageIfNeeded } from "@/lib/secureMessaging";
 import {
   createChat,
   createAiPrompt,
@@ -82,6 +83,7 @@ export function MessengerPage() {
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [theme, setTheme] = useState<string>(() => document.documentElement.dataset.theme || "prime");
+  const [userPassword, setUserPassword] = useState<string>(""); // Password for E2EE
 
   // Форма создания чата
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -229,6 +231,21 @@ export function MessengerPage() {
   };
 
   useEffect(() => { loadChats(); }, []);
+  
+  // Initialize E2EE password
+  useEffect(() => {
+    const stored = sessionStorage.getItem("e2ee_password");
+    if (stored) {
+      setUserPassword(stored);
+    } else {
+      // Request password on first load
+      const password = prompt("Введите пароль для расшифровки сообщений:");
+      if (password) {
+        setUserPassword(password);
+        sessionStorage.setItem("e2ee_password", password);
+      }
+    }
+  }, []);
 
   // Поиск пользователей для создания чата
   useEffect(() => {
@@ -649,9 +666,10 @@ export function MessengerPage() {
     if (!text || !selectedId) return;
     setDraft("");
     try {
-      const newMsg = await sendMessage(
+      const newMsg = await sendSecureMessage(
         selectedId,
         text,
+        userPassword,
         isAiChat
           ? {
               model: selectedAiModel || null,
