@@ -51,6 +51,10 @@ export function RegisterForm() {
       })
 
       setAuthSession(data.token, data.username ?? values.username)
+      
+      // Save password for E2EE (same as login)
+      sessionStorage.setItem("e2ee_password", values.password)
+      
       toast.success("Регистрация успешна! 🔐 Ключи шифрования созданы")
       navigate("/chat", { replace: true })
     } catch (error) {
