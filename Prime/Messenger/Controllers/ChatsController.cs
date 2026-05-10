@@ -100,6 +100,7 @@ namespace Messenger
                 FileName = message.FileName,
                 EncryptedText = message.EncryptedText,
                 EncryptedKey = message.EncryptedKey,
+                EncryptedKeyForSender = message.EncryptedKeyForSender,
                 IsEncrypted = message.IsEncrypted,
                 FileSize = message.FileSize,
                 FileUrl = message.FilePath == null ? null : $"/api/files/{message.Id}",
@@ -475,6 +476,7 @@ namespace Messenger
                 Text = dto.Text?.Trim() ?? string.Empty,
                 EncryptedText = dto.EncryptedText,
                 EncryptedKey = dto.EncryptedKey,
+                EncryptedKeyForSender = dto.EncryptedKeyForSender,
                 IsEncrypted = dto.IsEncrypted,
                 CreatedAt = DateTime.UtcNow
             };

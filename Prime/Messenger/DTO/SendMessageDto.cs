@@ -8,7 +8,8 @@ namespace Messenger.DTO
         
         // E2EE fields
         public string? EncryptedText { get; set; }  // Encrypted message text
-        public string? EncryptedKey { get; set; }   // Encrypted AES key
+        public string? EncryptedKey { get; set; }   // Encrypted AES key for recipient
+        public string? EncryptedKeyForSender { get; set; }  // Encrypted AES key for sender
         public bool IsEncrypted { get; set; }       // Flag indicating encryption
     }
 }

@@ -23,6 +23,7 @@ namespace Messenger
         // E2EE fields
         public string? EncryptedText { get; set; }
         public string? EncryptedKey { get; set; }
+        public string? EncryptedKeyForSender { get; set; }
         public bool IsEncrypted { get; set; }
     }
 }

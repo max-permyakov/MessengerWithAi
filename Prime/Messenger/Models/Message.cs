@@ -14,7 +14,8 @@ namespace Messenger.Models
         
         // E2EE fields
         public string? EncryptedText { get; set; }      // Encrypted message text (base64)
-        public string? EncryptedKey { get; set; }       // Encrypted AES key (base64)
+        public string? EncryptedKey { get; set; }       // Encrypted AES key for recipient (base64)
+        public string? EncryptedKeyForSender { get; set; }  // Encrypted AES key for sender (base64)
         public bool IsEncrypted { get; set; }           // Flag indicating if message is encrypted
         
         public string? FileName { get; set; }
