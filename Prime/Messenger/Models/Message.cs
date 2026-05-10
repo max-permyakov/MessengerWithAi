@@ -11,6 +11,12 @@ namespace Messenger.Models
         public bool IsAi { get; set; }
         public string? ModelName { get; set; }
         public int? PromptId { get; set; }
+        
+        // E2EE fields
+        public string? EncryptedText { get; set; }      // Encrypted message text (base64)
+        public string? EncryptedKey { get; set; }       // Encrypted AES key (base64)
+        public bool IsEncrypted { get; set; }           // Flag indicating if message is encrypted
+        
         public string? FileName { get; set; }
         public string? FilePath { get; set; }
         public string? FileContentType { get; set; }

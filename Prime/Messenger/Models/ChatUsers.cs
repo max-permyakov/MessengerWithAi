@@ -6,6 +6,9 @@ namespace Messenger.Models
         public Guid UserId { get; set; }            // FK → User
 
         public DateTime? LastReadAt { get; set; }
+        
+        // E2EE field for group chats
+        public string? EncryptedChatKey { get; set; }  // Encrypted group key (base64)
 
         public Chat Chat { get; set; } = null!;
         public User User { get; set; } = null!;

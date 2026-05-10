@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E2EE Crypto Tests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .container {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .info {
+            background: #1e3a5f;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status.running {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 E2EE Crypto Tests</h1>
+    
+    <div class="container">
+        <div class="info">
+            <h3>📋 Test Suite</h3>
+            <p>This page tests the Web Crypto API functions for End-to-End Encryption:</p>
+            <ul>
+                <li>✅ RSA-OAEP 2048 key pair generation</li>
+                <li>✅ Public/Private key export/import</li>
+                <li>✅ Private key encryption with password (PBKDF2 + AES-GCM)</li>
+                <li>✅ AES-256-GCM key generation</li>
+                <li>✅ Text encryption/decryption with AES</li>
+                <li>✅ AES key encryption with RSA</li>
+                <li>✅ Full E2EE flow (Alice → Bob)</li>
+            </ul>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div style="text-align: center;">
+            <button id="runTests" onclick="runTests()">🚀 Run All Tests</button>
+            <button id="clearConsole" onclick="clearConsole()">🗑️ Clear Console</button>
+        </div>
+        
+        <div class="console-output" id="console"></div>
+    </div>
+
+    <script>
+        // Intercept console.log
+        const consoleDiv = document.getElementById('console');
+        const statusDiv = document.getElementById('status');
+        const runButton = document.getElementById('runTests');
+        
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleDiv.innerHTML += message + '\n';
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleDiv.innerHTML += '<span style="color: #ff6b6b;">' + message + '</span>\n';
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        };
+        
+        function clearConsole() {
+            consoleDiv.innerHTML = '';
+            statusDiv.style.display = 'none';
+        }
+        
+        async function runTests() {
+            clearConsole();
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status running';
+            statusDiv.textContent = '⏳ Running tests...';
+            runButton.disabled = true;
+            
+            try {
+                // Load and run the test script
+                const script = document.createElement('script');
+                script.src = '/test-crypto.js?t=' + Date.now();
+                script.onload = () => {
+                    setTimeout(() => {
+                        statusDiv.className = 'status success';
+                        statusDiv.textContent = '✅ Tests completed! Check console output above.';
+                        runButton.disabled = false;
+                    }, 1000);
+                };
+                script.onerror = () => {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ Failed to load test script';
+                    runButton.disabled = false;
+                };
+                document.body.appendChild(script);
+            } catch (error) {
+                console.error('Error running tests:', error);
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Error: ' + error.message;
+                runButton.disabled = false;
+            }
+        }
+        
+        // Show instructions
+        console.log('👋 Welcome to E2EE Crypto Tests!');
+        console.log('Click "Run All Tests" button to start testing.\n');
+    </script>
+</body>
+</html>
