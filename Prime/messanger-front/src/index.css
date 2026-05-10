@@ -6,22 +6,22 @@
 :root {
   --background:     #0a0012;
   --foreground:     #f8f8ff;
-  --card:           rgba(20, 10, 40, 0.6);
+  --card:           rgba(255, 255, 255, 0.05);
   --card-foreground:#f8f8ff;
-  --popover:        rgba(26, 0, 51, 0.85);
+  --popover:        rgba(255, 255, 255, 0.08);
   --popover-foreground: #f8f8ff;
   --primary:        #a855f7;
   --primary-hover:  #9333ea;
   --primary-foreground: #ffffff;
   --secondary:      #2d1b47;
   --secondary-foreground: #d1d5db;
-  --muted:          rgba(30, 17, 51, 0.7);
+  --muted:          rgba(255, 255, 255, 0.03);
   --muted-foreground: #dad1e6;
   --accent:         #c084fc;
   --accent-foreground: #0f001a;
   --destructive:    #ef4444;
-  --border:         rgba(74, 31, 111, 0.4);
-  --input:          rgba(30, 17, 51, 0.6);
+  --border:         rgba(255, 255, 255, 0.18);
+  --input:          rgba(255, 255, 255, 0.05);
   --ring:           #a855f7;
   --radius:         0.875rem;
 }
@@ -29,22 +29,22 @@
 :root[data-theme="light"] {
   --background:     #f9fafb;
   --foreground:     #020617;
-  --card:           rgba(255, 255, 255, 0.8);
+  --card:           rgba(255, 255, 255, 0.7);
   --card-foreground:#020617;
-  --popover:        rgba(255, 255, 255, 0.9);
+  --popover:        rgba(255, 255, 255, 0.8);
   --popover-foreground: #020617;
   --primary:        #2563eb;
   --primary-hover:  #1d4ed8;
   --primary-foreground: #ffffff;
   --secondary:      #e5e7eb;
   --secondary-foreground: #111827;
-  --muted:          rgba(229, 231, 235, 0.8);
+  --muted:          rgba(255, 255, 255, 0.6);
   --muted-foreground: #4b5563;
   --accent:         #93c5fd;
   --accent-foreground: #111827;
   --destructive:    #b91c1c;
-  --border:         rgba(209, 213, 219, 0.5);
-  --input:          rgba(229, 231, 235, 0.7);
+  --border:         rgba(0, 0, 0, 0.1);
+  --input:          rgba(255, 255, 255, 0.7);
   --ring:           #2563eb;
   --radius:         0.875rem;
 }
@@ -52,22 +52,22 @@
 :root[data-theme="blue"] {
   --background:     #020617;
   --foreground:     #e5f0ff;
-  --card:           rgba(15, 23, 42, 0.7);
+  --card:           rgba(255, 255, 255, 0.05);
   --card-foreground:#e5f0ff;
-  --popover:        rgba(11, 18, 32, 0.85);
+  --popover:        rgba(255, 255, 255, 0.08);
   --popover-foreground: #e5f0ff;
   --primary:        #38bdf8;
   --primary-hover:  #0ea5e9;
   --primary-foreground: #021019;
   --secondary:      #1e293b;
   --secondary-foreground: #cbd5f5;
-  --muted:          rgba(15, 23, 42, 0.7);
+  --muted:          rgba(255, 255, 255, 0.03);
   --muted-foreground: #9ca3af;
   --accent:         #38bdf8;
   --accent-foreground: #021019;
   --destructive:    #f97373;
-  --border:         rgba(30, 41, 59, 0.5);
-  --input:          rgba(2, 6, 23, 0.6);
+  --border:         rgba(255, 255, 255, 0.18);
+  --input:          rgba(255, 255, 255, 0.05);
   --ring:           #38bdf8;
   --radius:         0.875rem;
 }
@@ -109,60 +109,66 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     overflow: hidden;
+    position: relative;
   }
 
-  /* Анимированный mesh-градиент на фоне */
+  /* Яркий анимированный градиентный фон */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
     background: 
-      radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, rgba(96, 165, 250, 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.08) 0%, transparent 60%);
-    z-index: -1;
-    animation: mesh-move 20s ease-in-out infinite;
+      radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.4) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.35) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.25) 0%, transparent 70%),
+      radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 60%);
+    z-index: 0;
+    animation: gradient-shift 15s ease-in-out infinite;
   }
 
-  /* Дополнительный слой с шумом для текстуры */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-    z-index: -1;
-  }
-
-  @keyframes mesh-move {
+  @keyframes gradient-shift {
     0%, 100% {
-      background-position: 0% 0%, 100% 100%, 50% 50%;
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
     }
     50% {
-      background-position: 100% 100%, 0% 0%, 50% 50%;
+      opacity: 0.8;
+      transform: scale(1.1) rotate(5deg);
     }
   }
 }
 
 @layer components {
-  /* Glassmorphism стили для модальных окон */
+  /* Правильный Glassmorphism */
   .glass-modal {
-    background: var(--card);
-    backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 8px 32px 0 rgba(0, 0, 0, 0.37),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
   }
 
   .glass-panel {
-    background: var(--muted);
-    backdrop-filter: blur(16px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
-      0 4px 16px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 4px 16px 0 rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .glass-message {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 4px 12px 0 rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
   }
 
   .auth-shell {
@@ -180,43 +186,45 @@
   .auth-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg, rgba(10,4,20,0.6), rgba(6,2,12,0.8));
+    background: 
+      radial-gradient(circle at 30% 30%, rgba(168, 85, 247, 0.5) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(96, 165, 250, 0.4) 0%, transparent 50%);
     z-index: 0;
     pointer-events: none;
   }
 
   .auth-glow {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.5;
+    filter: blur(80px);
+    opacity: 0.6;
     z-index: 0;
-    animation: glow-pulse 8s ease-in-out infinite;
+    animation: glow-pulse 10s ease-in-out infinite;
   }
 
   .auth-glow--left {
-    left: -100px;
-    top: -100px;
-    background: radial-gradient(circle at center, rgba(168,85,247,0.25), transparent 50%);
+    left: -150px;
+    top: -150px;
+    background: radial-gradient(circle at center, rgba(168,85,247,0.6), transparent 70%);
   }
 
   .auth-glow--right {
-    right: -100px;
-    bottom: -100px;
-    background: radial-gradient(circle at center, rgba(96,165,250,0.18), transparent 50%);
-    animation-delay: 4s;
+    right: -150px;
+    bottom: -150px;
+    background: radial-gradient(circle at center, rgba(96,165,250,0.5), transparent 70%);
+    animation-delay: 5s;
   }
 
   @keyframes glow-pulse {
     0%, 100% {
-      opacity: 0.5;
+      opacity: 0.6;
       transform: scale(1);
     }
     50% {
-      opacity: 0.7;
-      transform: scale(1.1);
+      opacity: 0.8;
+      transform: scale(1.15);
     }
   }
 
@@ -227,15 +235,16 @@
     max-width: 28rem;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 1rem;
+    border-radius: 1.5rem;
     padding: 2rem;
-    background: var(--card);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     color: var(--card-foreground);
-    border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 
       0 20px 60px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
 
   .auth-header {
@@ -244,17 +253,21 @@
   }
 
   .auth-eyebrow {
-    font-size: 1.7rem;
+    font-size: 2rem;
+    font-weight: 700;
     text-transform: uppercase;
-    text-shadow: 0 0 20px #9941ec, 0 0 40px #9941ec;
+    background: linear-gradient(135deg, #a855f7, #ec4899, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     letter-spacing: 0.2em;
-    color: rgb(130, 16, 236);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.5));
   }
 
   .auth-subtitle {
     font-size: 0.875rem;
-    color: var(--color-muted-foreground);
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .auth-form {
@@ -271,27 +284,28 @@
 
   .auth-input {
     width: 100%;
-    border-radius: 0.5rem;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    background: var(--input);
-    color: var(--color-foreground);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    outline: none;
+    border-radius: 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(8px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-    transition: all .2s ease;
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--color-foreground);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    outline: none;
+    transition: all .3s ease;
   }
 
   .auth-input:focus {
-    transform: translateY(-1px);
-    border-color: rgba(168, 85, 247, 0.4);
+    transform: translateY(-2px);
+    border-color: rgba(168, 85, 247, 0.6);
+    background: rgba(255, 255, 255, 0.12);
     box-shadow: 
-      0 4px 18px rgba(168,85,247,0.15), 
-      0 0 0 4px rgba(168,85,247,0.08),
-      inset 0 1px 0 rgba(255,255,255,0.08);
+      0 8px 24px rgba(168,85,247,0.25), 
+      0 0 0 4px rgba(168,85,247,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.2);
   }
 
   .auth-error {
@@ -303,29 +317,30 @@
   .auth-button {
     margin-top: 0.5rem;
     width: 100%;
-    border-radius: 0.5rem;
-    padding-top: 0.625rem;
-    padding-bottom: 0.625rem;
+    border-radius: 0.75rem;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
     text-align: center;
     font-weight: 600;
+    font-size: 1rem;
     color: #ffffff;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: linear-gradient(135deg, #a855f7, #ec4899);
     box-shadow: 
-      0 8px 24px rgba(168,85,247,0.25),
-      inset 0 1px 0 rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all .2s ease;
+      0 10px 30px rgba(168,85,247,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all .3s ease;
   }
 
   .auth-button:hover:not(:disabled) {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: 
-      0 12px 32px rgba(168,85,247,0.35),
-      inset 0 1px 0 rgba(255,255,255,0.25);
+      0 15px 40px rgba(168,85,247,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.4);
   }
 
   .auth-button:active:not(:disabled) {
-    transform: translateY(0);
+    transform: translateY(-1px);
   }
 
   .auth-button:disabled {
@@ -335,21 +350,21 @@
   }
 
   .auth-footer {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     font-size: 0.875rem;
     text-align: center;
-    color: var(--color-muted-foreground);
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .auth-link {
-    color: rgb(130, 16, 236);
+    color: #a855f7;
     text-decoration: none;
-    font-weight: 500;
-    transition: color .15s ease;
+    font-weight: 600;
+    transition: color .2s ease;
   }
 
   .auth-link:hover {
-    color: var(--primary);
+    color: #c084fc;
   }
 
   @media (min-width: 640px) {

@@ -963,7 +963,7 @@ export function MessengerPage() {
                       key={msg.id}
                       className={cn(
                         "max-w-[75%] rounded-3xl px-5 py-3 break-words",
-                        msg.isMine ? "ml-auto bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/20" : "glass-panel"
+                        msg.isMine ? "ml-auto bg-gradient-to-br from-primary/90 to-accent/90 text-primary-foreground shadow-lg shadow-primary/30 border border-white/20" : "glass-message"
                       )}
                     >
                       <div className="flex items-start gap-2">
@@ -1609,6 +1609,7 @@ export function MessengerPage() {
     </div>
   );
 }
+
 
 
 
