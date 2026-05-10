@@ -943,7 +943,7 @@ export function MessengerPage() {
               {isLoadingMessages ? (
                 <div className="text-center py-12">Загрузка сообщений...</div>
               ) : (
-                messages.map(msg => {
+                messages.slice().reverse().map(msg => {
                   const hasFile = msg.hasFile || !!msg.fileUrl;
                   const previewUrl = previewUrls[msg.id];
                   const isImage = msg.fileContentType?.startsWith("image/");
