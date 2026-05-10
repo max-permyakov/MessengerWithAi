@@ -232,18 +232,11 @@ export function MessengerPage() {
 
   useEffect(() => { loadChats(); }, []);
   
-  // Initialize E2EE password
+  // Initialize E2EE password from sessionStorage (set during login)
   useEffect(() => {
     const stored = sessionStorage.getItem("e2ee_password");
     if (stored) {
       setUserPassword(stored);
-    } else {
-      // Request password on first load
-      const password = prompt("Введите пароль для расшифровки сообщений:");
-      if (password) {
-        setUserPassword(password);
-        sessionStorage.setItem("e2ee_password", password);
-      }
     }
   }, []);
 

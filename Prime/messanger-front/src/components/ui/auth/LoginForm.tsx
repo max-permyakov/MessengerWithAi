@@ -36,6 +36,10 @@ export function LoginForm() {
       })
 
       setAuthSession(data.token, data.username ?? values.username)
+      
+      // Save password for E2EE (encrypted in sessionStorage)
+      sessionStorage.setItem("e2ee_password", values.password)
+      
       toast.success("С возвращением!")
       navigate("/chat", { replace: true })
     } catch (error) {
