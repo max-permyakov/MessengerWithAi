@@ -133,6 +133,19 @@ namespace Messenger
 
             return Ok(new { publicKey = user.PublicKey });
         }
+        
+        [HttpGet("me/privatekey")]
+        public async Task<IActionResult> GetMyPrivateKey()
+        {
+            var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(currentUserIdClaim) || !Guid.TryParse(currentUserIdClaim, out Guid currentUserId))
+                return Unauthorized("Invalid user token");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == currentUserId);
+            if (user == null) return Unauthorized("User not found");
+
+            return Ok(new { encryptedPrivateKey = user.EncryptedPrivateKey });
+        }
 
         [HttpPost("me/avatar")]
         [RequestSizeLimit(20L * 1024 * 1024)]

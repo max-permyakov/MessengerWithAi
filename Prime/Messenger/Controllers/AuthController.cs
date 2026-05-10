@@ -34,6 +34,7 @@ namespace Messenger
                 Username = dto.Username,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 PublicKey = dto.PublicKey,  // Save public key for E2EE
+                EncryptedPrivateKey = dto.EncryptedPrivateKey,  // Save encrypted private key
                 CreatedAt = DateTime.UtcNow
             };
 

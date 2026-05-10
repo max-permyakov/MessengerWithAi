@@ -40,6 +40,26 @@ export function LoginForm() {
       // Save password for E2EE (encrypted in sessionStorage)
       sessionStorage.setItem("e2ee_password", values.password)
       
+      // Load encrypted private key from server
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL ?? "https://192.168.0.232:4001"}/api/users/me/privatekey`, {
+          headers: {
+            "Authorization": `Bearer ${data.token}`,
+          },
+        });
+        
+        if (response.ok) {
+          const { encryptedPrivateKey } = await response.json();
+          if (encryptedPrivateKey) {
+            // Store in localStorage
+            const { storeEncryptedPrivateKey } = await import("@/lib/keyManager");
+            storeEncryptedPrivateKey(encryptedPrivateKey);
+          }
+        }
+      } catch (error) {
+        console.warn("Failed to load private key from server:", error);
+      }
+      
       toast.success("С возвращением!")
       navigate("/chat", { replace: true })
     } catch (error) {

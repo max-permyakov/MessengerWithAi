@@ -41,13 +41,14 @@ export function RegisterForm() {
     try {
       // Generate E2EE keys
       toast.info("Генерация ключей шифрования...")
-      const publicKey = await generateAndStoreKeys(values.password)
+      const { publicKey, encryptedPrivateKey } = await generateAndStoreKeys(values.password)
 
-      // Register user with public key
+      // Register user with public key and encrypted private key
       const data = await registerUser({
         username: values.username,
         password: values.password,
-        publicKey,  // Send public key to server
+        publicKey,
+        encryptedPrivateKey,  // Send encrypted private key to server
       })
 
       setAuthSession(data.token, data.username ?? values.username)
