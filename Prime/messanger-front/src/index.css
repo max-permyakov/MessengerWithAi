@@ -26,6 +26,52 @@
   --radius:         0.875rem;
 }
 
+:root[data-theme="light"] {
+  --background:     #f9fafb;
+  --foreground:     #020617;
+  --card:           rgba(255, 255, 255, 0.7);
+  --card-foreground:#020617;
+  --popover:        rgba(255, 255, 255, 0.8);
+  --popover-foreground: #020617;
+  --primary:        #2563eb;
+  --primary-hover:  #1d4ed8;
+  --primary-foreground: #ffffff;
+  --secondary:      #e5e7eb;
+  --secondary-foreground: #111827;
+  --muted:          rgba(255, 255, 255, 0.6);
+  --muted-foreground: #4b5563;
+  --accent:         #93c5fd;
+  --accent-foreground: #111827;
+  --destructive:    #b91c1c;
+  --border:         rgba(0, 0, 0, 0.1);
+  --input:          rgba(255, 255, 255, 0.7);
+  --ring:           #2563eb;
+  --radius:         0.875rem;
+}
+
+:root[data-theme="blue"] {
+  --background:     #020617;
+  --foreground:     #e5f0ff;
+  --card:           rgba(255, 255, 255, 0.05);
+  --card-foreground:#e5f0ff;
+  --popover:        rgba(255, 255, 255, 0.08);
+  --popover-foreground: #e5f0ff;
+  --primary:        #38bdf8;
+  --primary-hover:  #0ea5e9;
+  --primary-foreground: #021019;
+  --secondary:      #1e293b;
+  --secondary-foreground: #cbd5f5;
+  --muted:          rgba(255, 255, 255, 0.03);
+  --muted-foreground: #9ca3af;
+  --accent:         #38bdf8;
+  --accent-foreground: #021019;
+  --destructive:    #f97373;
+  --border:         rgba(255, 255, 255, 0.15);
+  --input:          rgba(255, 255, 255, 0.05);
+  --ring:           #38bdf8;
+  --radius:         0.875rem;
+}
+
 @theme inline {
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --color-ring: var(--ring);
