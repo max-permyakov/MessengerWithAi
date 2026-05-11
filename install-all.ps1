@@ -106,9 +106,42 @@ Write-Host "  ✓ Создан .env.local" -ForegroundColor Green
 # Генерация сертификатов для HTTPS
 if ($protocol -eq "https") {
     Write-Host "  Генерация SSL-сертификатов..." -ForegroundColor Yellow
+    
+    # Проверка OpenSSL
+    $opensslCmd = Get-Command openssl -ErrorAction SilentlyContinue
+    if (-not $opensslCmd) {
+        Write-Host "  ⚠️  OpenSSL не найден (нужен для .pfx)" -ForegroundColor Yellow
+        Write-Host "  Установка OpenSSL через winget..." -ForegroundColor Yellow
+        
+        if (Get-Command winget -ErrorAction SilentlyContinue) {
+            try {
+                winget install --id FireDaemon.OpenSSL -e --silent --accept-source-agreements --accept-package-agreements | Out-Null
+                
+                # Обновляем PATH
+                $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+                
+                # Проверяем снова
+                $opensslCmd = Get-Command openssl -ErrorAction SilentlyContinue
+                if ($opensslCmd) {
+                    Write-Host "  ✓ OpenSSL установлен" -ForegroundColor Green
+                } else {
+                    Write-Host "  ⚠️  OpenSSL установлен, но требуется перезапуск терминала" -ForegroundColor Yellow
+                    Write-Host "  Сертификаты .pem будут созданы, но .pfx потребует перезапуска" -ForegroundColor Yellow
+                }
+            } catch {
+                Write-Host "  ⚠️  Не удалось установить OpenSSL автоматически" -ForegroundColor Yellow
+                Write-Host "  Установите вручную: https://slproweb.com/products/Win32OpenSSL.html" -ForegroundColor Yellow
+            }
+        } else {
+            Write-Host "  ⚠️  winget не найден. Установите OpenSSL вручную" -ForegroundColor Yellow
+            Write-Host "  https://slproweb.com/products/Win32OpenSSL.html" -ForegroundColor Yellow
+        }
+    }
+    
+    # Генерация сертификатов
     $certScript = Join-Path $frontendDir "scripts\generate-certs.ps1"
     if (Test-Path $certScript) {
-        & $certScript.Source
+        & $certScript
     } else {
         Write-Host "  ⚠️  Скрипт генерации сертификатов не найден" -ForegroundColor Yellow
     }
@@ -136,46 +169,69 @@ Write-Host "  Server=localhost\\SQLEXPRESS;Database=MessangerDb;Trusted_Connecti
 Write-Host ""
 $connectionString = Read-Host "Строка подключения"
 
-# Создание appsettings.Development.json
-$appSettingsDev = @{
-    "Logging" = @{
-        "LogLevel" = @{
-            "Default" = "Information"
-            "Microsoft.AspNetCore" = "Warning"
-        }
-    }
-    "AllowedHosts" = "*"
-    "ConnectionStrings" = @{
-        "DefaultConnection" = $connectionString
-    }
-    "Jwt" = @{
-        "Key" = $jwtKey
-        "Issuer" = "Messenger"
-        "Audience" = "Messanger"
-    }
-    "AiService" = @{
-        "BaseUrl" = "http://localhost:8000"
-    }
-    "Features" = @{
-        "AiEnabled" = $hasOllama
-    }
-}
-
+# Создание appsettings.Development.json вручную (точно как в примере)
 if ($protocol -eq "https") {
-    $appSettingsDev["Https"] = @{
-        "Url" = "https://0.0.0.0:4001"
-        "Certificate" = @{
-            "Path" = "certs/prime-dev.pfx"
-            "Password" = "changeit"
-        }
-    }
+    $appSettingsJson = @"
+{{
+  "Logging": {{
+    "LogLevel": {{
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }}
+  }},
+  "AllowedHosts": "*",
+  "ConnectionStrings": {{
+    "DefaultConnection": "{0}"
+  }},
+  "Jwt": {{
+    "Key": "{1}",
+    "Issuer": "Messenger",
+    "Audience": "Messanger"
+  }},
+  "AiService": {{
+    "BaseUrl": "http://localhost:8000"
+  }},
+  "Features": {{
+    "AiEnabled": {2}
+  }},
+  "Https": {{
+    "Url": "https://0.0.0.0:4001",
+    "Certificate": {{
+      "Path": "../messanger-front/certs/prime-dev.pfx",
+      "Password": "changeit"
+    }}
+  }}
+}}
+"@ -f $connectionString, $jwtKey, $hasOllama.ToString().ToLower()
 } else {
-    $appSettingsDev["Http"] = @{
-        "Url" = "http://0.0.0.0:4000"
-    }
+    $appSettingsJson = @"
+{{
+  "Logging": {{
+    "LogLevel": {{
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }}
+  }},
+  "AllowedHosts": "*",
+  "ConnectionStrings": {{
+    "DefaultConnection": "{0}"
+  }},
+  "Jwt": {{
+    "Key": "{1}",
+    "Issuer": "Messenger",
+    "Audience": "Messanger"
+  }},
+  "AiService": {{
+    "BaseUrl": "http://localhost:8000"
+  }},
+  "Features": {{
+    "AiEnabled": {2}
+  }}
+}}
+"@ -f $connectionString, $jwtKey, $hasOllama.ToString().ToLower()
 }
 
-$appSettingsDev | ConvertTo-Json -Depth 10 | Set-Content "appsettings.Development.json"
+$appSettingsJson | Set-Content "appsettings.Development.json" -Encoding UTF8
 
 Write-Host "  ✓ Создан appsettings.Development.json" -ForegroundColor Green
 Write-Host ""

@@ -37,3 +37,25 @@ Write-Host ("Hosts: " + ($Hosts -join ", "))
 & $mkcert.Source -key-file (Join-Path $certDir "dev-key.pem") -cert-file (Join-Path $certDir "dev-cert.pem") @Hosts
 
 Write-Host "Done: certs/dev-key.pem and certs/dev-cert.pem" -ForegroundColor Green
+
+# Конвертация в .pfx для ASP.NET
+Write-Host "Converting to .pfx for ASP.NET..." -ForegroundColor Yellow
+$certPem = Join-Path $certDir "dev-cert.pem"
+$keyPem = Join-Path $certDir "dev-key.pem"
+$pfxPath = Join-Path $certDir "prime-dev.pfx"
+$pfxPassword = "changeit"
+
+try {
+    # Используем OpenSSL для конвертации
+    $openssl = Get-Command openssl -ErrorAction SilentlyContinue
+    if ($openssl) {
+        & openssl pkcs12 -export -out $pfxPath -inkey $keyPem -in $certPem -passout pass:$pfxPassword
+        Write-Host "Done: certs/prime-dev.pfx (password: changeit)" -ForegroundColor Green
+    } else {
+        Write-Host "OpenSSL not found. Install: choco install openssl" -ForegroundColor Yellow
+        Write-Host "Skipping .pfx conversion. Backend will use HTTP." -ForegroundColor Yellow
+    }
+} catch {
+    Write-Host "Failed to convert to .pfx: $_" -ForegroundColor Red
+    Write-Host "Backend will use HTTP." -ForegroundColor Yellow
+}
