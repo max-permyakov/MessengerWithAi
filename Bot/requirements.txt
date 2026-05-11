@@ -1,0 +1,6 @@
+python-dotenv
+aiogram
+ollama
+aiohttp
+fastapi
+uvicorn
