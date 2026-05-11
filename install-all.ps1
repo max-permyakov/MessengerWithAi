@@ -1,4 +1,4 @@
-# ============================================
+﻿# ============================================
 # Prime Messenger — Универсальный скрипт установки
 # ============================================
 # Этот скрипт настраивает ВСЁ проект автоматически
@@ -280,7 +280,11 @@ Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Открытые порты:" -ForegroundColor Yellow
 Write-Host "  Frontend:   https://localhost:5173" -ForegroundColor Cyan
-Write-Host "  Backend:    $protocol://localhost:400$($protocol.Substring(4,1))" -ForegroundColor Cyan
+if ($protocol -eq "https") {
+    Write-Host "  Backend:    https://localhost:4001" -ForegroundColor Cyan
+} else {
+    Write-Host "  Backend:    http://localhost:4000" -ForegroundColor Cyan
+}
 if ($hasOllama) {
     Write-Host "  AI Service: http://localhost:8000" -ForegroundColor Cyan
 }
